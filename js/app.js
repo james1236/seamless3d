@@ -1,3 +1,6 @@
+var player;
+var keys = {};
+
 function init() {
 	//Variables
 	var globalTimer = 0;
@@ -42,6 +45,7 @@ function init() {
 		// onLoad callback
 		function (obj) {
 			obj.position.y = 1;
+			player = obj;
 			scene.add(obj);
 		},
 
@@ -120,11 +124,45 @@ function init() {
 		controls.update();  	
 	}
 	
+	document.addEventListener("keydown", function (e) {keys[e.which] = true;}, false);
+	document.addEventListener("keyup", function (e) {keys[e.which] = false;}, false);
+	
+	function keyControl(event) {
+		if (keys[87] || keys[38]) { //up
+			
+		}		
+		if (keys[83] || keys[40]) { //down
+			
+		}
+		if (keys[65] || keys[37]) { //left
+			player.rotation.z += 0.03;
+			player.position.x -= 0.03;
+			
+			player.position.y = 1 + getRotProg(player.rotation.z)/180;
+			
+		}
+		if (keys[68] || keys[39]) { //right
+			player.rotation.z -= 0.03;
+			player.position.x += 0.03;
+			
+			player.position.y = 1 + getRotProg(player.rotation.z)/180;
+		}
+	}
+	
+	function getRotProg(rot) {
+		rotProg = Math.abs(rad2deg(rot)) % 90;
+		if (rotProg > 45) {
+			rotProg = 45 - (rotProg-45);
+		}
+		return rotProg;
+	}
+	
 	function render() {
 		renderer.render(scene,camera);
 	}
 	
 	function gameLoop() {
+		keyControl();
 		tick();
 		render();
 		
@@ -132,4 +170,9 @@ function init() {
 	}
 
 	gameLoop();
+	
+	//Support
+	function rad2deg(rad) {
+		return rad * (180/Math.PI);
+	}
 }
