@@ -1,5 +1,5 @@
 function init() {
-	//Globals
+	//Variables
 	var globalTimer = 0;
 	
 	//Scene
@@ -23,6 +23,8 @@ function init() {
 	var renderer = new THREE.WebGLRenderer({antialias: true});
 	renderer.setSize(window.innerWidth,window.innerHeight);
 	renderer.shadowMapEnabled = true;
+	renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+	renderer.gammaOutput = true;
 	
 	document.body.appendChild(renderer.domElement);
 	
@@ -32,9 +34,54 @@ function init() {
 	//Load Objects
 	var loader = new THREE.ObjectLoader();
 
+	//Load player
 	loader.load(
 		// resource URL
 		"models/player.json",
+
+		// onLoad callback
+		function (obj) {
+			obj.position.y = 1;
+			scene.add(obj);
+		},
+
+		// onProgress callback
+		function ( xhr ) {
+			console.log( (xhr.loaded / xhr.total * 100) + '% loaded' );
+		},
+
+		// onError callback
+		function ( err ) {
+			console.error( 'An error happened' );
+		}
+	);		
+	
+	//Load button
+	loader.load(
+		// resource URL
+		"models/button.json",
+
+		// onLoad callback
+		function (obj) {
+			obj.position.x = -1;
+			scene.add(obj);
+		},
+
+		// onProgress callback
+		function ( xhr ) {
+			console.log( (xhr.loaded / xhr.total * 100) + '% loaded' );
+		},
+
+		// onError callback
+		function ( err ) {
+			console.error( 'An error happened' );
+		}
+	);	
+	
+	//Load land
+	loader.load(
+		// resource URL
+		"models/land.json",
 
 		// onLoad callback
 		function (obj) {
@@ -50,7 +97,7 @@ function init() {
 		function ( err ) {
 			console.error( 'An error happened' );
 		}
-	);		
+	);
 
 	//Lighting
 	var globalLight = new THREE.AmbientLight("#222222",2.66);
@@ -67,6 +114,7 @@ function init() {
 	scene.add(sunlight);
 
 	
+	//Render and control loop
 	function tick() {
 		globalTimer++;
 		controls.update();  	

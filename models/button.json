@@ -1,0 +1,93 @@
+{
+	"metadata": {
+		"version": 4.5,
+		"type": "Object",
+		"generator": "Object3D.toJSON"
+	},
+	"geometries": [
+		{
+			"uuid": "B234BA46-DD59-4571-B207-07EEB33E41C5",
+			"type": "BoxBufferGeometry",
+			"width": 1,
+			"height": 1,
+			"depth": 1,
+			"widthSegments": 1,
+			"heightSegments": 1,
+			"depthSegments": 1
+		},
+		{
+			"uuid": "02CCE5CD-67F9-4894-B339-28A0D84DCAD8",
+			"type": "BoxBufferGeometry",
+			"width": 1,
+			"height": 1,
+			"depth": 1,
+			"widthSegments": 1,
+			"heightSegments": 1,
+			"depthSegments": 1
+		}],
+	"materials": [
+		{
+			"uuid": "A646B688-F858-4BE5-B078-29833BA07146",
+			"type": "MeshLambertMaterial",
+			"color": 16723245,
+			"emissive": 16318464,
+			"depthFunc": 3,
+			"depthTest": true,
+			"depthWrite": true,
+			"stencilWrite": false,
+			"stencilWriteMask": 255,
+			"stencilFunc": 519,
+			"stencilRef": 0,
+			"stencilFuncMask": 255,
+			"stencilFail": 7680,
+			"stencilZFail": 7680,
+			"stencilZPass": 7680
+		},
+		{
+			"uuid": "DE831C2F-CD96-49DB-9A91-DF59B9F73F5E",
+			"type": "MeshLambertMaterial",
+			"color": 2631720,
+			"emissive": 0,
+			"depthFunc": 3,
+			"depthTest": true,
+			"depthWrite": true,
+			"stencilWrite": false,
+			"stencilWriteMask": 255,
+			"stencilFunc": 519,
+			"stencilRef": 0,
+			"stencilFuncMask": 255,
+			"stencilFail": 7680,
+			"stencilZFail": 7680,
+			"stencilZPass": 7680
+		}],
+	"object": {
+		"uuid": "A74DA0CE-D773-4553-BAD3-B660AB43C5E5",
+		"type": "Group",
+		"name": "Button",
+		"layers": 1,
+		"matrix": [1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1],
+		"children": [
+			{
+				"uuid": "1E2B9B5C-FF0F-4353-9098-0226A67B2FEA",
+				"type": "Mesh",
+				"name": "Box",
+				"castShadow": true,
+				"receiveShadow": true,
+				"layers": 1,
+				"matrix": [0.85,0,0,0,0,0.85,0,0,0,0,0.85,0,0,0.2,0,1],
+				"geometry": "B234BA46-DD59-4571-B207-07EEB33E41C5",
+				"material": "A646B688-F858-4BE5-B078-29833BA07146"
+			},
+			{
+				"uuid": "98D58394-962A-4152-B6B1-257D54F99F85",
+				"type": "Mesh",
+				"name": "Box",
+				"castShadow": true,
+				"receiveShadow": true,
+				"layers": 1,
+				"matrix": [0.9,0,0,0,0,0.9,0,0,0,0,0.9,0,0,0.1,0,1],
+				"geometry": "02CCE5CD-67F9-4894-B339-28A0D84DCAD8",
+				"material": "DE831C2F-CD96-49DB-9A91-DF59B9F73F5E"
+			}]
+	}
+}

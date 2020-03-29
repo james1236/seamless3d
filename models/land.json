@@ -1,0 +1,47 @@
+{
+	"metadata": {
+		"version": 4.5,
+		"type": "Object",
+		"generator": "Object3D.toJSON"
+	},
+	"geometries": [
+		{
+			"uuid": "AACF429D-96BE-4B6E-8609-F910AADF0DAB",
+			"type": "BoxBufferGeometry",
+			"width": 1,
+			"height": 1,
+			"depth": 1,
+			"widthSegments": 1,
+			"heightSegments": 1,
+			"depthSegments": 1
+		}],
+	"materials": [
+		{
+			"uuid": "B9E8254B-C495-4C18-A1A2-F123D72BB9D7",
+			"type": "MeshLambertMaterial",
+			"color": 9145227,
+			"emissive": 0,
+			"depthFunc": 3,
+			"depthTest": true,
+			"depthWrite": true,
+			"stencilWrite": false,
+			"stencilWriteMask": 255,
+			"stencilFunc": 519,
+			"stencilRef": 0,
+			"stencilFuncMask": 255,
+			"stencilFail": 7680,
+			"stencilZFail": 7680,
+			"stencilZPass": 7680
+		}],
+	"object": {
+		"uuid": "09E9D9B1-6FCC-4CF3-B38C-281B641B365A",
+		"type": "Mesh",
+		"name": "Grass",
+		"castShadow": true,
+		"receiveShadow": true,
+		"layers": 1,
+		"matrix": [15,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1],
+		"geometry": "AACF429D-96BE-4B6E-8609-F910AADF0DAB",
+		"material": "B9E8254B-C495-4C18-A1A2-F123D72BB9D7"
+	}
+}
