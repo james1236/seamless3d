@@ -3,10 +3,12 @@ var land;
 var keys = {};
 var pivot = {};
 var demoDir = false;
+var gravity;
+var lastGravityFrame = -1;
+var globalTimer = 0;
 
 function init() {
 	//Variables
-	var globalTimer = 0;
 	
 	//Scene
 	var scene = new THREE.Scene();
@@ -133,25 +135,51 @@ function init() {
 	document.addEventListener("keyup", function (e) {keys[e.which] = false;}, false);
 	
 	function keyControl() {
+		var moved = false;
 		if (keys[87] || keys[38]) { //up
-
+			
 		}		
 		if (keys[83] || keys[40]) { //down
 			
 		}
 		if (keys[65] || keys[37]) { //left
-			moveLeft();
+			moveLeft(0.07);
+			moved = true;
 		}
 
 		if (keys[68] || keys[39]) { //right
-			moveRight();
+			moveRight(0.07);
+			moved = true;
 		}
+		
+		try {
+			if (!moved && Object.keys(keys).length > 0 && rad2deg(player.rotation.z) % 90 != 0) {
+				if (lastGravityFrame != globalTimer-1) {
+					gravity = 0.003;
+				}
+				
+				if (rad2deg(player.rotation.z) > 0) {
+					if (rad2deg(player.rotation.z) > 45) {
+						moveLeft(gravity);
+					} else {
+						moveRight(gravity);
+					}
+				} else {
+					if (rad2deg(player.rotation.z) > -45) {
+						moveLeft(gravity);
+					} else {
+						moveRight(gravity);
+					}
+				}
+				
+				lastGravityFrame = globalTimer;
+				gravity += 0.003;
+			}
+		} catch (e) {}
 	}
 	
-	function moveLeft() {
+	function moveLeft(delta) {
 		try {
-			var delta = 0.07;
-			
 			if (rad2deg(player.rotation.z) % 90 == 0) {
 				pivot.x = player.position.x - 0.5;
 				pivot.y = player.position.y - 0.5;
@@ -181,10 +209,8 @@ function init() {
 		} catch (e) {}
 	}
 	
-	function moveRight() {
+	function moveRight(delta) {
 		try {
-			var delta = 0.07;
-			
 			if (rad2deg(player.rotation.z) % 90 == 0) {
 				pivot.x = player.position.x + 0.5;
 				pivot.y = player.position.y - 0.5;
@@ -256,9 +282,9 @@ function init() {
 		
 			if (Object.keys(keys).length == 0) {
 				if (demoDir) {
-					moveRight();
+					moveRight(0.07);
 				} else {
-					moveLeft();
+					moveLeft(0.07);
 				}
 				
 				if (player.position.x > 5) {
