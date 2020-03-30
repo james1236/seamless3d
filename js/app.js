@@ -1,5 +1,7 @@
 var player;
 var keys = {};
+var pivot = {};
+var demoDir = false;
 
 function init() {
 	//Variables
@@ -127,34 +129,104 @@ function init() {
 	document.addEventListener("keydown", function (e) {keys[e.which] = true;}, false);
 	document.addEventListener("keyup", function (e) {keys[e.which] = false;}, false);
 	
-	function keyControl(event) {
+	function keyControl() {
 		if (keys[87] || keys[38]) { //up
-			
+
 		}		
 		if (keys[83] || keys[40]) { //down
 			
 		}
 		if (keys[65] || keys[37]) { //left
-			player.rotation.z += 0.03;
-			player.position.x -= 0.03;
-			
-			player.position.y = 1 + getRotProg(player.rotation.z)/180;
-			
+			moveLeft();
 		}
+
 		if (keys[68] || keys[39]) { //right
-			player.rotation.z -= 0.03;
-			player.position.x += 0.03;
-			
-			player.position.y = 1 + getRotProg(player.rotation.z)/180;
+			moveRight();
 		}
 	}
 	
-	function getRotProg(rot) {
-		rotProg = Math.abs(rad2deg(rot)) % 90;
-		if (rotProg > 45) {
-			rotProg = 45 - (rotProg-45);
-		}
-		return rotProg;
+	function moveLeft() {
+		try {
+			var delta = 0.03;
+			
+			if (rad2deg(player.rotation.z) % 90 == 0) {
+				pivot.x = player.position.x - 0.5;
+				pivot.y = player.position.y - 0.5;
+			}
+		
+			if (player.rotation.z < 0) {
+				player.rotation.z += deg2rad(90);
+			}
+		
+			player.rotation.z += delta;
+			
+			if (rad2deg(player.rotation.z) > 90) {
+				if (player.position.x < pivot.x) {
+					delta = deg2rad(90)-player.rotation.z-delta;
+					player.rotation.z = deg2rad(0);
+					player.position.y = Math.round(player.position.y);
+					player.position.x = Math.round(player.position.x);
+				} else {
+					player.rotation.z-=deg2rad(90);
+				}
+				
+			} else {
+				newPos = rotate_pivot(pivot.x,pivot.y,delta,{x:player.position.x,y:player.position.y});
+				player.position.x = newPos.x;
+				player.position.y = newPos.y;
+			}
+		} catch (e) {}
+	}
+	
+	function moveRight() {
+		try {
+			var delta = 0.03;
+			
+			if (rad2deg(player.rotation.z) % 90 == 0) {
+				pivot.x = player.position.x + 0.5;
+				pivot.y = player.position.y - 0.5;
+			}
+			
+			if (player.rotation.z > 0) {
+				player.rotation.z -= deg2rad(90);
+			}
+			
+			player.rotation.z -= delta;
+			
+			if (rad2deg(player.rotation.z) < -90) {
+				if (player.position.x > pivot.x) {
+					delta = player.rotation.z;
+					player.rotation.z = deg2rad(0);
+					player.position.y = Math.round(player.position.y);
+					player.position.x = Math.round(player.position.x);
+				} else {
+					player.rotation.z+=deg2rad(90);
+				}
+				
+			} else {
+				newPos = rotate_pivot(pivot.x,pivot.y,-delta,{x:player.position.x,y:player.position.y});
+				player.position.x = newPos.x;
+				player.position.y = newPos.y;
+			}
+		} catch (e) {}
+	}
+	
+	function rotate_pivot(cx,cy,angle,p) {
+		s = Math.sin(angle);
+		c = Math.cos(angle);
+
+		// translate point back to origin:
+		p.x -= cx;
+		p.y -= cy;
+
+		// rotate point
+		xnew = p.x * c - p.y * s;
+		ynew = p.x * s + p.y * c;
+
+		// translate point back:
+		p.x = xnew + cx;
+		p.y = ynew + cy;
+		return p;
 	}
 	
 	function render() {
@@ -163,6 +235,26 @@ function init() {
 	
 	function gameLoop() {
 		keyControl();
+		
+		try {
+			document.getElementsByClassName("log")[0].innerHTML = "Player Rotation Z: "+rad2deg(player.rotation.z);	
+		
+			if (Object.keys(keys).length == 0) {
+				if (demoDir) {
+					moveRight();
+				} else {
+					moveLeft();
+				}
+				
+				if (player.position.x > 5) {
+					demoDir = false;
+				}
+				if (player.position.x < -5) {
+					demoDir = true;
+				}
+			}
+		} catch (e) {}
+		
 		tick();
 		render();
 		
@@ -174,5 +266,8 @@ function init() {
 	//Support
 	function rad2deg(rad) {
 		return rad * (180/Math.PI);
+	}
+	function deg2rad(deg) {
+		return deg * (Math.PI/180);
 	}
 }
