@@ -1,4 +1,5 @@
 var player;
+var land;
 var keys = {};
 var pivot = {};
 var demoDir = false;
@@ -34,7 +35,7 @@ function init() {
 	document.body.appendChild(renderer.domElement);
 	
 	//Controls
-	controls = new THREE.TrackballControls(camera);
+	//controls = new THREE.TrackballControls(camera);
 	
 	//Load Objects
 	var loader = new THREE.ObjectLoader();
@@ -91,6 +92,8 @@ function init() {
 
 		// onLoad callback
 		function (obj) {
+			obj.position.y -= 19.5;
+			land = obj;
 			scene.add(obj);
 		},
 
@@ -123,7 +126,7 @@ function init() {
 	//Render and control loop
 	function tick() {
 		globalTimer++;
-		controls.update();  	
+		//controls.update();  	
 	}
 	
 	document.addEventListener("keydown", function (e) {keys[e.which] = true;}, false);
@@ -147,7 +150,7 @@ function init() {
 	
 	function moveLeft() {
 		try {
-			var delta = 0.03;
+			var delta = 0.07;
 			
 			if (rad2deg(player.rotation.z) % 90 == 0) {
 				pivot.x = player.position.x - 0.5;
@@ -180,7 +183,7 @@ function init() {
 	
 	function moveRight() {
 		try {
-			var delta = 0.03;
+			var delta = 0.07;
 			
 			if (rad2deg(player.rotation.z) % 90 == 0) {
 				pivot.x = player.position.x + 0.5;
@@ -229,6 +232,18 @@ function init() {
 		return p;
 	}
 	
+	function moveCamera() {
+		try { 
+			camera.position.x = player.position.x;
+			camera.position.y = player.position.y+2.5;
+			camera.position.z = 6;
+			camera.rotation.x = deg2rad(-25);
+			camera.rotation.y = 0;
+			camera.rotation.z = 0;
+			land.position.x = player.position.x;
+		} catch (e) {}
+	}
+	
 	function render() {
 		renderer.render(scene,camera);
 	}
@@ -256,6 +271,7 @@ function init() {
 		} catch (e) {}
 		
 		tick();
+		moveCamera();
 		render();
 		
 		requestAnimationFrame(gameLoop);

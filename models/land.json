@@ -40,7 +40,7 @@
 		"castShadow": true,
 		"receiveShadow": true,
 		"layers": 1,
-		"matrix": [15,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1],
+		"matrix": [60,0,0,0,0,40,0,0,0,0,1,0,0,0,0,1],
 		"geometry": "AACF429D-96BE-4B6E-8609-F910AADF0DAB",
 		"material": "B9E8254B-C495-4C18-A1A2-F123D72BB9D7"
 	}

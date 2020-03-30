@@ -31,6 +31,7 @@
 			"type": "MeshLambertMaterial",
 			"color": 16723245,
 			"emissive": 16318464,
+			"blending": 0,
 			"depthFunc": 3,
 			"depthTest": true,
 			"depthWrite": true,
@@ -74,7 +75,7 @@
 				"castShadow": true,
 				"receiveShadow": true,
 				"layers": 1,
-				"matrix": [0.85,0,0,0,0,0.85,0,0,0,0,0.85,0,0,0.2,0,1],
+				"matrix": [0.7,0,0,0,0,0.7,0,0,0,0,0.7,0,0,0.3,0,1],
 				"geometry": "B234BA46-DD59-4571-B207-07EEB33E41C5",
 				"material": "A646B688-F858-4BE5-B078-29833BA07146"
 			},
@@ -85,7 +86,7 @@
 				"castShadow": true,
 				"receiveShadow": true,
 				"layers": 1,
-				"matrix": [0.9,0,0,0,0,0.9,0,0,0,0,0.9,0,0,0.1,0,1],
+				"matrix": [0.8,0,0,0,0,0.8,0,0,0,0,0.8,0,0,0.137637,0,1],
 				"geometry": "02CCE5CD-67F9-4894-B339-28A0D84DCAD8",
 				"material": "DE831C2F-CD96-49DB-9A91-DF59B9F73F5E"
 			}]
