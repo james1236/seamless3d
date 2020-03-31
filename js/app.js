@@ -6,6 +6,7 @@ var demoDir = false;
 var gravity;
 var lastGravityFrame = -1;
 var globalTimer = 0;
+var telescope;
 
 function init() {
 	//Variables
@@ -108,6 +109,29 @@ function init() {
 		function ( err ) {
 			console.error( 'An error happened' );
 		}
+	);	
+	
+	//Load land
+	loader.load(
+		// resource URL
+		"models/telescope.json",
+
+		// onLoad callback
+		function (obj) {
+			obj.position.x = 3;
+			telescope = obj;
+			scene.add(obj);
+		},
+
+		// onProgress callback
+		function ( xhr ) {
+			console.log( (xhr.loaded / xhr.total * 100) + '% loaded' );
+		},
+
+		// onError callback
+		function ( err ) {
+			console.error( 'An error happened' );
+		}
 	);
 
 	//Lighting
@@ -123,6 +147,8 @@ function init() {
 	sunlight.shadowMapWidth = 2048;
 	sunlight.shadowMapHeight = 2048;
 	scene.add(sunlight);
+	
+	//telescope.children.length[0]
 
 	
 	//Render and control loop
@@ -295,6 +321,18 @@ function init() {
 				}
 			}
 		} catch (e) {}
+		
+			try {
+				if (Math.abs(-1 - player.position.x) < 0.5 && (player.position.y - Math.round(player.position.y)) < 0.1) {
+					for (var child = 0; child < telescope.children.length-1; child++) {
+						if (telescope.children[child].position.y > telescope.children[child+1].position.y) {
+							telescope.children[child].position.y -= 0.02;
+							break;
+						}
+						//0.18
+					}
+				}
+			} catch (e) {}
 		
 		tick();
 		moveCamera();
