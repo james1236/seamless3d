@@ -6,7 +6,8 @@ var demoDir = false;
 var gravity;
 var lastGravityFrame = -1;
 var globalTimer = 0;
-var telescope;
+var telescopes = [];
+var previousPlayerPositions = [];
 
 function init() {
 	//Variables
@@ -95,9 +96,20 @@ function init() {
 
 		// onLoad callback
 		function (obj) {
-			obj.position.y -= 19.5;
+			
+			
 			land = obj;
+			var land2 = obj.clone();
+			land2.scale.x = 4;
+			land2.position.x = 4;
+			land2.position.y = 5;
+			
+			obj.position.y = -19.5;
+			obj.scale.x = 60;
+			obj.scale.y = 40;
+			
 			scene.add(obj);
+			scene.add(land2);
 		},
 
 		// onProgress callback
@@ -119,8 +131,12 @@ function init() {
 		// onLoad callback
 		function (obj) {
 			obj.position.x = 3;
-			telescope = obj;
-			scene.add(obj);
+			telescopes[0] = obj;
+			telescopes[1] = telescopes[0].clone();
+			scene.add(telescopes[0]);
+			scene.add(telescopes[1]);
+			telescopes[1].rotation.x = deg2rad(180);
+			telescopes[1].position.y += 5;
 		},
 
 		// onProgress callback
@@ -169,12 +185,12 @@ function init() {
 			
 		}
 		if (keys[65] || keys[37]) { //left
-			moveLeft(0.07);
+			moveLeft(0.1);
 			moved = true;
 		}
 
 		if (keys[68] || keys[39]) { //right
-			moveRight(0.07);
+			moveRight(0.1);
 			moved = true;
 		}
 		
@@ -286,8 +302,25 @@ function init() {
 	
 	function moveCamera() {
 		try { 
-			camera.position.x = player.position.x;
-			camera.position.y = player.position.y+2.5;
+			//Update player history
+			if (previousPlayerPositions.length >= 20) {
+				previousPlayerPositions.shift();
+			}
+			previousPlayerPositions.push(JSON.parse(JSON.stringify(player.position)));
+			
+			//Get average pos
+			var finalPos = {x:0,y:0,z:0};
+			for (var i = 0; i < previousPlayerPositions.length; i++) {
+				finalPos.x += previousPlayerPositions[i].x;
+				finalPos.y += previousPlayerPositions[i].y;
+				finalPos.z += previousPlayerPositions[i].z;
+			}
+			finalPos.x /= previousPlayerPositions.length;
+			finalPos.y /= previousPlayerPositions.length;
+			finalPos.z /= previousPlayerPositions.length;
+	
+			camera.position.x = finalPos.x;
+			camera.position.y = finalPos.y+2.5;
 			camera.position.z = 6;
 			camera.rotation.x = deg2rad(-25);
 			camera.rotation.y = 0;
@@ -322,14 +355,17 @@ function init() {
 			}
 		} catch (e) {}
 		
+			//Telescope animation
 			try {
 				if (Math.abs(-1 - player.position.x) < 0.5 && (player.position.y - Math.round(player.position.y)) < 0.1) {
-					for (var child = 0; child < telescope.children.length-1; child++) {
-						if (telescope.children[child].position.y > telescope.children[child+1].position.y) {
-							telescope.children[child].position.y -= 0.02;
-							break;
+					for (var i = 0; i < telescopes.length; i++) {
+						for (var child = 0; child < telescopes[i].children.length-1; child++) {
+							if (telescopes[i].children[child].position.y > telescopes[i].children[child+1].position.y) {
+								telescopes[i].children[child].position.y -= 0.02;
+								break;
+							}
+							//0.18
 						}
-						//0.18
 					}
 				}
 			} catch (e) {}
