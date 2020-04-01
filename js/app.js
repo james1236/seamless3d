@@ -164,7 +164,6 @@ function init() {
 	sunlight.shadowMapHeight = 2048;
 	scene.add(sunlight);
 	
-	//telescope.children.length[0]
 
 	
 	//Render and control loop
@@ -218,6 +217,7 @@ function init() {
 				gravity += 0.003;
 			}
 		} catch (e) {}
+		
 	}
 	
 	function moveLeft(delta) {
@@ -227,8 +227,8 @@ function init() {
 				pivot.y = player.position.y - 0.5;
 			}
 		
-			if (player.rotation.z < 0) {
-				player.rotation.z += deg2rad(90);
+			if (player.rotation.z == deg2rad(90)) {
+				player.rotation.z = deg2rad(0);
 			}
 		
 			player.rotation.z += delta;
@@ -239,8 +239,6 @@ function init() {
 					player.rotation.z = deg2rad(0);
 					player.position.y = Math.round(player.position.y);
 					player.position.x = Math.round(player.position.x);
-				} else {
-					player.rotation.z-=deg2rad(90);
 				}
 				
 			} else {
@@ -258,20 +256,18 @@ function init() {
 				pivot.y = player.position.y - 0.5;
 			}
 			
-			if (player.rotation.z > 0) {
-				player.rotation.z -= deg2rad(90);
+			if (player.rotation.z == deg2rad(0)) {
+				player.rotation.z = deg2rad(90);
 			}
 			
 			player.rotation.z -= delta;
 			
-			if (rad2deg(player.rotation.z) < -90) {
+			if (rad2deg(player.rotation.z) < 0) {
 				if (player.position.x > pivot.x) {
 					delta = player.rotation.z;
-					player.rotation.z = deg2rad(0);
+					player.rotation.z = deg2rad(90);
 					player.position.y = Math.round(player.position.y);
 					player.position.x = Math.round(player.position.x);
-				} else {
-					player.rotation.z+=deg2rad(90);
 				}
 				
 			} else {
